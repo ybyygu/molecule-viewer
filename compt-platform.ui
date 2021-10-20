@@ -1,0 +1,1150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>996</width>
+    <height>702</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab_compt">
+         <attribute name="title">
+          <string>高通量计算</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QTabWidget" name="tabWidget_3">
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="tabPosition">
+             <enum>QTabWidget::West</enum>
+            </property>
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <widget class="QWidget" name="tab_5">
+             <attribute name="title">
+              <string>分子结构</string>
+             </attribute>
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_15">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+                  <item>
+                   <widget class="QPushButton" name="btnBrowseFile_2">
+                    <property name="text">
+                     <string>浏览</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="editFilePath_2">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnUploadMolecule_2">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="text">
+                     <string>上传分子结构</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>false</bool>
+                    </property>
+                    <property name="default">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QTableWidget" name="tableWidget">
+                  <column>
+                   <property name="text">
+                    <string>文件名</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>原子数</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>分子式</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_4">
+             <attribute name="title">
+              <string>计算任务</string>
+             </attribute>
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_17">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_16">
+                  <item>
+                   <widget class="QLabel" name="label_11">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>20</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>150</width>
+                      <height>22</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>任务类型</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="frame_3">
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <widget class="QWidget" name="layoutWidget">
+                     <property name="geometry">
+                      <rect>
+                       <x>20</x>
+                       <y>20</y>
+                       <width>88</width>
+                       <height>172</height>
+                      </rect>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_14">
+                      <item>
+                       <widget class="QPushButton" name="pushButton_2">
+                        <property name="text">
+                         <string>单点计算</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_3">
+                        <property name="text">
+                         <string>结构优化</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_4">
+                        <property name="text">
+                         <string>频率计算 </string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_5">
+                        <property name="text">
+                         <string>自定义任务</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnBatchScriptSaveAs">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>将计算脚本另存为文件</string>
+                  </property>
+                  <property name="statusTip">
+                   <string extracomment="ww"/>
+                  </property>
+                  <property name="text">
+                   <string>另存为..</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPlainTextEdit" name="plainTextEdit"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_7">
+             <attribute name="title">
+              <string>结果分析</string>
+             </attribute>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QTableWidget" name="tableWidget_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>true</bool>
+                </property>
+                <property name="columnCount">
+                 <number>1</number>
+                </property>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>结果文件</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_13">
+                <item>
+                 <widget class="QPushButton" name="btnProjectRoot">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>项目路径</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_5">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Expanding</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>150</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_14">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>结果分析</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="Line" name="line_3">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnGeomOpt">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>结构优化</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnVibration">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>振动频率</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnReactionPath">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>反应路径</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnDOS">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>态密度(DOS)</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QWebEngineView" name="webOutputView">
+                <property name="minimumSize">
+                 <size>
+                  <width>500</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="url">
+                 <url>
+                  <string>about:blank</string>
+                 </url>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_morph">
+         <attribute name="title">
+          <string>晶体形貌预测</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QTabWidget" name="tabWidget_2">
+            <property name="tabPosition">
+             <enum>QTabWidget::West</enum>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="tab">
+             <attribute name="title">
+              <string>晶体结构</string>
+             </attribute>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="2">
+                 <widget class="QLineEdit" name="editFilePath">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="btnBrowseFile">
+                  <property name="text">
+                   <string>浏览</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QPushButton" name="btnUploadMolecule">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="text">
+                   <string>上传分子结构</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>false</bool>
+                  </property>
+                  <property name="default">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0" colspan="4">
+                 <widget class="QWebEngineView" name="webEngineView">
+                  <property name="url">
+                   <url>
+                    <string>about:blank</string>
+                   </url>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_8">
+             <attribute name="title">
+              <string>XRD模拟</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="0" column="4">
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_5">
+                  <item>
+                   <widget class="QLabel" name="label_4">
+                    <property name="text">
+                     <string>Theta</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout">
+                    <item>
+                     <widget class="QSpinBox" name="spinBox_2">
+                      <property name="minimum">
+                       <number>-9</number>
+                      </property>
+                      <property name="maximum">
+                       <number>9</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QSpinBox" name="spinBox_3">
+                      <property name="minimum">
+                       <number>-360</number>
+                      </property>
+                      <property name="maximum">
+                       <number>360</number>
+                      </property>
+                      <property name="value">
+                       <number>90</number>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="Line" name="line">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_6">
+                  <item>
+                   <widget class="QLabel" name="label_5">
+                    <property name="text">
+                     <string>Wave length</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_3">
+                    <item>
+                     <property name="text">
+                      <string>CuKa</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="Line" name="line_2">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                  <item>
+                   <widget class="QLabel" name="label_6">
+                    <property name="text">
+                     <string>Intensity Threshold</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="spinBox_4">
+                    <property name="minimum">
+                     <number>0</number>
+                    </property>
+                    <property name="maximum">
+                     <number>999</number>
+                    </property>
+                    <property name="value">
+                     <number>9</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="btnSimulateXRD">
+                <property name="text">
+                 <string>计算</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="5">
+               <widget class="QWebEngineView" name="webXRD">
+                <property name="url">
+                 <url>
+                  <string>about:blank</string>
+                 </url>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_2">
+             <attribute name="title">
+              <string>计算设置</string>
+             </attribute>
+             <widget class="QPushButton" name="pushButton">
+              <property name="geometry">
+               <rect>
+                <x>680</x>
+                <y>220</y>
+                <width>94</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>提交任务</string>
+              </property>
+             </widget>
+             <widget class="QFrame" name="frame">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>260</y>
+                <width>641</width>
+                <height>241</height>
+               </rect>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <widget class="QWidget" name="gridLayoutWidget">
+               <property name="geometry">
+                <rect>
+                 <x>30</x>
+                 <y>20</y>
+                 <width>521</width>
+                 <height>191</height>
+                </rect>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_3">
+                <item row="2" column="5">
+                 <layout class="QVBoxLayout" name="verticalLayout_8">
+                  <item>
+                   <widget class="QLabel" name="label_7">
+                    <property name="text">
+                     <string>Output format</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox">
+                    <item>
+                     <property name="text">
+                      <string>POSCAR</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>.cif</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="2" column="1">
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="1" column="3">
+                 <layout class="QVBoxLayout" name="verticalLayout_2">
+                  <item>
+                   <widget class="QLabel" name="label_2">
+                    <property name="text">
+                     <string>Atomic layer (A)</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit_4">
+                    <property name="text">
+                     <string>5.0</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="2" column="3">
+                 <layout class="QVBoxLayout" name="verticalLayout_3">
+                  <item>
+                   <widget class="QCheckBox" name="checkBox_2">
+                    <property name="text">
+                     <string>In the center</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="1">
+                 <spacer name="verticalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="1" column="5">
+                 <layout class="QVBoxLayout" name="verticalLayout_9">
+                  <item>
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>Vaccum layers (A)</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEdit_6">
+                    <property name="text">
+                     <string>5.0</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0">
+                 <layout class="QVBoxLayout" name="verticalLayout_10">
+                  <item>
+                   <widget class="QLabel" name="label">
+                    <property name="text">
+                     <string>Miller Index(h,k,l)</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_5">
+                    <item>
+                     <widget class="QSpinBox" name="spinBox">
+                      <property name="minimum">
+                       <number>-9</number>
+                      </property>
+                      <property name="maximum">
+                       <number>9</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QSpinBox" name="spinBox_5">
+                      <property name="minimum">
+                       <number>-9</number>
+                      </property>
+                      <property name="maximum">
+                       <number>9</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QSpinBox" name="spinBox_6">
+                      <property name="minimum">
+                       <number>-9</number>
+                      </property>
+                      <property name="maximum">
+                       <number>9</number>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+                <item row="2" column="0">
+                 <layout class="QVBoxLayout" name="verticalLayout_11">
+                  <item>
+                   <widget class="QCheckBox" name="checkBox">
+                    <property name="text">
+                     <string>Symmetrized</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="4">
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="2" column="4">
+                 <spacer name="verticalSpacer_4">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+             <widget class="QLabel" name="label_3">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>10</y>
+                <width>181</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>计算参数设置</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_9">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>230</y>
+                <width>181</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Slab模型设置</string>
+              </property>
+             </widget>
+             <widget class="QFrame" name="frame_2">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>40</y>
+                <width>641</width>
+                <height>161</height>
+               </rect>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <property name="midLineWidth">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="layoutWidget">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>10</y>
+                 <width>87</width>
+                 <height>64</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_12">
+                <item>
+                 <widget class="QLabel" name="label_10">
+                  <property name="text">
+                   <string>计算引擎</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBox_2">
+                  <item>
+                   <property name="text">
+                    <string>VASP</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>ABINIT</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>SIESTA</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="tab_3">
+             <attribute name="title">
+              <string>晶体形貌</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_5">
+              <item row="0" column="4">
+               <spacer name="horizontalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="3">
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="btnDrawWulff">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>绘制Wulff</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="btnSetWullOptions">
+                <property name="text">
+                 <string>参数设置</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" rowspan="2">
+               <widget class="QTableWidget" name="tableSurfaceEnergies">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>220</width>
+                  <height>559</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>220</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <column>
+                 <property name="text">
+                  <string>Miller index</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>γ (J/m²)</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item row="1" column="1" colspan="4">
+               <widget class="QLabel" name="lblWulff">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_metastable">
+         <attribute name="title">
+          <string>亚稳态结构预测</string>
+         </attribute>
+         <widget class="QLabel" name="label_12">
+          <property name="geometry">
+           <rect>
+            <x>30</x>
+            <y>20</y>
+            <width>63</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>施工中</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_spectrum">
+         <attribute name="title">
+          <string>谱学解析</string>
+         </attribute>
+         <widget class="QLabel" name="label_13">
+          <property name="geometry">
+           <rect>
+            <x>30</x>
+            <y>20</y>
+            <width>63</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>施工中</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>996</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menua">
+    <property name="title">
+     <string>文件(&amp;F)</string>
+    </property>
+    <addaction name="actionexit"/>
+   </widget>
+   <addaction name="menua"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionexit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
