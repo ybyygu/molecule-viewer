@@ -15,13 +15,13 @@ def update_webview_url(web: QWebEngineView, url: str):
 def get_wulff_html_path(plot_options):
     return "file:///home/path/to/wulff.html"
 
+
 # 2 3 5:7 => 2,3,5-7
 def jmol_selection_to_human_readable(s: str):
     return s.replace(":", "-").replace(" ", ",")
 
-def gen_gosh_script(
-    path, index, freeze_atoms: str = "", invert_selection=False, output_format=".poscar"
-):
+
+def gen_gosh_script(path, index, freeze_atoms: str = "", invert_selection=False):
     if len(freeze_atoms) > 0:
         s = jmol_selection_to_human_readable(freeze_atoms)
         freeze_atoms_commands = "\nselect {:}".format(s)
@@ -34,13 +34,12 @@ def gen_gosh_script(
 
     template = """gosh -- << EOF
 load {path}{freeze_atoms_commands}
-write {index}{output_format}
+write {index}.poscar
 EOF"""
 
     return template.format(
         path=path,
         index=index,
-        output_format=output_format,
         freeze_atoms_commands=freeze_atoms_commands,
     )
 
@@ -138,6 +137,16 @@ class MainForm(QMainWindow, Ui_MainWindow):
         update_webview_url(web, url)
         self.show_status("DOS created")
 
+    @QtCore.pyqtSlot(name="on_btnHTCSaveScript_clicked")
+    def htc_save_script(self):
+        txt = self.plainTextHTCBatchScript.toPlainText()
+        path, filter = QFileDialog.getSaveFileName(
+            self, "Save file", "", "Text files (*.txt)"
+        )
+        if path:
+            with open(path, "w") as f:
+                f.write(txt)
+
     @QtCore.pyqtSlot(name="on_btnHTCGenBatchScript_clicked")
     def htc_gen_batch_script(self):
         text_widget = self.plainTextHTCBatchScript
@@ -160,27 +169,91 @@ class MainForm(QMainWindow, Ui_MainWindow):
                 path, i, freeze_atoms=freeze_atoms, invert_selection=invert_selection
             )
             lines.append(s)
-            lines.append("bbm -t sp {}".format(path))
+            lines.append("bbm -t sp {}.poscar".format(i))
             lines.append("# input for job {} ends here\n".format(i))
 
         text_widget.setPlainText("\n".join(lines))
         self.show_status("batch script generated.")
+
+    def on_htc_table_item_clicked(self, item: QTableWidgetItem):
+        cif_file = item.text()
+        update_web_widget_mol_file_path(self.webHTCMoleculeShow, cif_file)
+        self.statusBar.showMessage("item clicked: {}".format(cif_file))
+
+    @QtCore.pyqtSlot(name="on_btnSimulateXRD_clicked")
+    def wulff_show_xrd(self):
+        path = "/home/ybyygu/Workspace/Programming/structure-predication/ui/tests/jsmol/simulated_xrd.html"
+        web = self.webXRD
+        update_webview_url(web, "file://" + path)
+        self.show_status("XRD graph created")
+
+    @QtCore.pyqtSlot(name="on_btnBrowseFile_clicked")
+    def wulff_open_mol_file(self):
+        fname = self.dialog_get_mol_file()
+        self.editFilePath.setText(fname[0])
+
+    @QtCore.pyqtSlot(name="on_btnWulffProjectRoot_clicked")
+    def wulff_set_project_root_directory(self):
+        dir = self.dialog_get_project_directory()
+        self.lineEditWulffProjectRoot.setText(dir)
+
+    @QtCore.pyqtSlot(name="on_btnDrawWulff_clicked")
+    def wulff_show_wulff_graph(self):
+        self.wulff_show_table()
+        # FIXME: read from UI widgets
+        plot_options = ""
+        url = get_wulff_html_path(plot_options)
+        update_webview_url(self.webWulffShow, url)
+
+    def wulff_show_table(self):
+        table = self.tableSurfaceEnergies
+        table.setRowCount(3)
+        table.setItem(0, 0, QTableWidgetItem("(1,0,1)"))
+        table.setItem(0, 1, QTableWidgetItem("3.22"))
+        table.setItem(1, 0, QTableWidgetItem("(1,1,1)"))
+        table.setItem(1, 1, QTableWidgetItem("2.24"))
+
+    @QtCore.pyqtSlot(name="on_btnSurfaceBrowse_clicked")
+    def surface_open_mol_file(self):
+        fname = self.dialog_get_mol_file()
+        self.editSurfaceFilePath.setText(fname[0])
 
     @QtCore.pyqtSlot(name="on_btnSurfaceCreateAdsorption_clicked")
     def surface_create_adsorption_structures(self):
         self.update_surface_table()
         self.show_status("clicked")
 
-    @QtCore.pyqtSlot(name="on_btnSimulateXRD_clicked")
-    def surface_show_xrd(self):
-        web = self.webXRD
-        path = "/home/ybyygu/Workspace/Programming/structure-predication/ui/tests/jsmol/simulated_xrd.html"
-        update_webview_url(web, "file://" + path)
-        self.show_status("XRD graph created")
+    # @QtCore.pyqtSlot(name="on_btnSetWullOptions_clicked")
+    # def show_wulff_image(self):
+    #     from PyQt5.QtGui import QPixmap
 
-    @QtCore.pyqtSlot(name="on_btnSetWullOptions_clicked")
-    def surface_show_wull_options_dialog(self):
-        pass
+    #     pixmap = QPixmap("tests/wulff.png")
+    #     self.lblWulff.setPixmap(pixmap)
+    #     self.wulff_show_table()
+
+    def update_surface_table(self):
+        table = self.tableSurfaceFileList
+        table.setRowCount(4)
+        for i in range(4):
+            table.setItem(i, 0, QTableWidgetItem("conf{}.cif".format(i)))
+
+    def on_surface_table_item_clicked(self, item: QTableWidgetItem):
+        cif_file = item.text()
+        supercell = self.checkboxSurfaceSupercell.isChecked()
+        update_web_widget_mol_file_path(
+            self.webSurfaceShow, cif_file, supercell=supercell
+        )
+        self.statusBar.showMessage("item clicked: {}".format(cif_file))
+
+    @QtCore.pyqtSlot(name="on_btnReactionPreview_clicked")
+    def reaction_preview_path(self):
+        web = self.webReactionPreview
+        chain_file_path = "chain.cif"
+        supercell = self.checkboxReactionSupercell.isChecked()
+        update_web_widget_mol_file_path(
+            web, chain_file_path, supercell=supercell, animation=True
+        )
+        self.statusBar.showMessage("item clicked")
 
     def dialog_get_mol_file(self):
         options = QFileDialog.Options()
@@ -202,76 +275,6 @@ class MainForm(QMainWindow, Ui_MainWindow):
 
     def dialog_get_project_directory(self):
         return QFileDialog.getExistingDirectory(self, "Select Directory")
-
-    @QtCore.pyqtSlot(name="on_btnBrowseFile_clicked")
-    def wulff_open_mol_file(self):
-        fname = self.dialog_get_mol_file()
-        self.editFilePath.setText(fname[0])
-
-    @QtCore.pyqtSlot(name="on_btnWulffProjectRoot_clicked")
-    def wulff_set_project_root_directory(self):
-        dir = self.dialog_get_project_directory()
-        self.lineEditWulffProjectRoot.setText(dir)
-
-    @QtCore.pyqtSlot(name="on_btnSurfaceBrowse_clicked")
-    def surface_open_mol_file(self):
-        fname = self.dialog_get_mol_file()
-        self.editSurfaceFilePath.setText(fname[0])
-
-    # @QtCore.pyqtSlot(name="on_btnSetWullOptions_clicked")
-    # def show_wulff_image(self):
-    #     from PyQt5.QtGui import QPixmap
-
-    #     pixmap = QPixmap("tests/wulff.png")
-    #     self.lblWulff.setPixmap(pixmap)
-    #     self.show_wulff_table()
-
-    @QtCore.pyqtSlot(name="on_btnDrawWulff_clicked")
-    def show_wulff_graph(self):
-        self.show_wulff_table()
-        plot_options = ""
-        url = get_wulff_html_path(plot_options)
-        update_webview_url(self.webWulffShow, url)
-
-    def show_wulff_table(self):
-        table = self.tableSurfaceEnergies
-        table.setRowCount(3)
-        table.setItem(0, 0, QTableWidgetItem("(1,0,1)"))
-        table.setItem(0, 1, QTableWidgetItem("3.22"))
-        table.setItem(1, 0, QTableWidgetItem("(1,1,1)"))
-        table.setItem(1, 1, QTableWidgetItem("2.24"))
-
-    def update_surface_table(self):
-        from PyQt5.QtWidgets import QTableWidgetItem
-
-        table = self.tableSurfaceFileList
-        table.setRowCount(4)
-        for i in range(4):
-            table.setItem(i, 0, QTableWidgetItem("conf{}.cif".format(i)))
-
-    def on_surface_table_item_clicked(self, item: QTableWidgetItem):
-        cif_file = item.text()
-        supercell = self.checkboxSurfaceSupercell.isChecked()
-        update_web_widget_mol_file_path(
-            self.webSurfaceShow, cif_file, supercell=supercell
-        )
-        self.statusBar.showMessage("item clicked: {}".format(cif_file))
-
-    def on_htc_table_item_clicked(self, item: QTableWidgetItem):
-        cif_file = item.text()
-        update_web_widget_mol_file_path(self.webHTCMoleculeShow, cif_file)
-        self.statusBar.showMessage("item clicked: {}".format(cif_file))
-
-    @QtCore.pyqtSlot(name="on_btnReactionPreview_clicked")
-    def on_reaction_preview_clicked(self):
-        web = self.webReactionPreview
-        chain_file_path = "chain.cif"
-        supercell = self.checkboxReactionSupercell.isChecked()
-        update_web_widget_mol_file_path(
-            web, chain_file_path, supercell=supercell, animation=True
-        )
-        self.statusBar.showMessage("item clicked")
-
 
 if __name__ == "__main__":
     import sys
