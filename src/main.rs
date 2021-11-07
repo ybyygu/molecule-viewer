@@ -1,20 +1,9 @@
-// [[file:../ui.note::*main.rs][main.rs:1]]
-use cursive::views::TextView;
-use cursive::Cursive;
-
+// [[file:../ui.note::f69a16e3][f69a16e3]]
+// When compiling natively:
+#[cfg(not(target_arch = "wasm32"))]
 fn main() {
-    let mut siv = cursive::default();
-
-    // We can quit by pressing `q`
-    siv.add_global_callback('q', Cursive::quit);
-
-    // Add a simple view
-    siv.add_layer(TextView::new(
-        "Hello World!\n\
-         Press q to quit the application.",
-    ));
-
-    // Run the event loop
-    siv.run();
+    let app = ui::TemplateApp::default();
+    let native_options = eframe::NativeOptions::default();
+    eframe::run_native(Box::new(app), native_options);
 }
-// main.rs:1 ends here
+// f69a16e3 ends here

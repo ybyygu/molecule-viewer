@@ -1,18 +1,16 @@
-# [[file:ui.note::*cargo][cargo:1]]
+# [[file:ui.note::4e30cf79][4e30cf79]]
 [package]
 name = "ui"
 version = "0.0.1"
-edition = "2018"
+edition = "2021"
 authors = ["Wenping Guo <ybyygu@gmail.com>"]
 
 [dependencies]
-clap = "3.0.0-beta.1"
-cursive = "0.11"
+clap = "3.0.0-beta.5"
+eframe = "0.15.0" # Gives us egui, epi and web+native backends
 
 [dev-dependencies]
 
-# [dependencies.cursive]
-# version = "0.11"
-# default-features = false
-# features = ["crossterm-backend"]
-# cargo:1 ends here
+[profile.release]
+opt-level = 2 # fast and small wasm
+# 4e30cf79 ends here

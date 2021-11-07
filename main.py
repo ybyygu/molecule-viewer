@@ -13,8 +13,7 @@ def update_webview_url(web: QWebEngineView, url: str):
 
 
 def get_wulff_html_path(plot_options):
-    return "file:///home/path/to/wulff.html"
-
+    return "file:///home/ybyygu/Workspace/Programming/structure-predication/ui/tests/jsmol/wulff.html"
 
 # 2 3 5:7 => 2,3,5-7
 def jmol_selection_to_human_readable(s: str):
@@ -149,6 +148,7 @@ class MainForm(QMainWindow, Ui_MainWindow):
 
     @QtCore.pyqtSlot(name="on_btnHTCGenBatchScript_clicked")
     def htc_gen_batch_script(self):
+        import os
         text_widget = self.plainTextHTCBatchScript
 
         table = self.tableHTCFileList
@@ -165,6 +165,7 @@ class MainForm(QMainWindow, Ui_MainWindow):
 
         for i in range(n):
             path = table.item(i, 0).text()
+            path = os.path.basename(path)
             s = gen_gosh_script(
                 path, i, freeze_atoms=freeze_atoms, invert_selection=invert_selection
             )
@@ -200,7 +201,7 @@ class MainForm(QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSlot(name="on_btnDrawWulff_clicked")
     def wulff_show_wulff_graph(self):
         self.wulff_show_table()
-        # FIXME: read from UI widgets
+        # FIXME: read options from UI widgets
         plot_options = ""
         url = get_wulff_html_path(plot_options)
         update_webview_url(self.webWulffShow, url)
@@ -233,9 +234,10 @@ class MainForm(QMainWindow, Ui_MainWindow):
 
     def update_surface_table(self):
         table = self.tableSurfaceFileList
-        table.setRowCount(4)
-        for i in range(4):
-            table.setItem(i, 0, QTableWidgetItem("conf{}.cif".format(i)))
+        n = 15
+        table.setRowCount(n)
+        for i in range(n):
+            table.setItem(i, 0, QTableWidgetItem("conf{:02}.cif".format(i)))
 
     def on_surface_table_item_clicked(self, item: QTableWidgetItem):
         cif_file = item.text()
