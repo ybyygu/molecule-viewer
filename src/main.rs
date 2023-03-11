@@ -27,7 +27,15 @@ fn new_atom_sphere(context: &Context, coord: [f32; 3], size: f32) -> ChemGeomMat
 // 373fa44e ends here
 
 // [[file:../ui.note::03701512][03701512]]
-fn new_bond_cylinder(context: &Context, coord: [f32; 3], size: f32) -> Gm<Mesh, PhysicalMaterial> {
+fn new_bond_cylinder(
+    context: &Context,
+    coord1: impl Into<Vec3>,
+    coord2: impl Into<Vec3>,
+    size: f32,
+) -> Gm<Mesh, PhysicalMaterial> {
+    let coord1 = coord1.into();
+    let coord2 = coord2.into();
+
     let mut cylinder = Gm::new(
         Mesh::new(&context, &CpuMesh::cylinder(16)),
         PhysicalMaterial::new_opaque(
@@ -38,23 +46,49 @@ fn new_bond_cylinder(context: &Context, coord: [f32; 3], size: f32) -> Gm<Mesh, 
             },
         ),
     );
-    cylinder.set_transformation(Mat4::from_translation(coord.into()) * Mat4::from_nonuniform_scale(size, 0.07, 0.07));
+
+    let thickness = 0.07;
+    let direction = coord2 - coord1;
+    let length = direction.magnitude();
+    let translation = Mat4::from_translation(coord1);
+    let rotation: Mat4 = Quat::from_arc(Vec3::unit_x(), direction.normalize(), None).into();
+    let scale = Mat4::from_nonuniform_scale(length, thickness, thickness);
+    cylinder.set_transformation(translation * rotation * scale);
     cylinder
 }
 // 03701512 ends here
 
 // [[file:../ui.note::7c7026e3][7c7026e3]]
-fn draw_atoms(context: &Context) -> Vec<ChemGeomMater> {
-    let f = "tests/files/CH4.gjf";
-    let mol = Molecule::from_file(f).unwrap();
+fn draw_atoms(context: &Context, mol: &Molecule) -> Vec<ChemGeomMater> {
     mol.atoms().map(|(_, a)| draw_atom(context, a)).collect()
 }
 
 fn draw_atom(context: &Context, atom: &Atom) -> ChemGeomMater {
     let coord = atom.position().map(|x| x as f32);
-    new_atom_sphere(context, coord, 0.6)
+    let size = (atom.get_cov_radius().unwrap_or(0.5) + 0.5) / 3.0;
+    new_atom_sphere(context, coord, size as f32)
 }
 // 7c7026e3 ends here
+
+// [[file:../ui.note::2f286ebd][2f286ebd]]
+fn draw_bonds(context: &Context, mol: &Molecule) -> Vec<ChemGeomMater> {
+    let mut bonds = vec![];
+    for (u, v, b) in mol.bonds() {
+        if !b.is_dummy() {
+            let au = mol.get_atom_unchecked(u);
+            let av = mol.get_atom_unchecked(v);
+            let pu: Vec3 = au.position().map(|x| x as f32).into();
+            let pv: Vec3 = av.position().map(|x| x as f32).into();
+            bonds.push(draw_bond(context, pu, pv));
+        }
+    }
+    bonds
+}
+
+fn draw_bond(context: &Context, coord1: Vec3, coord2: Vec3) -> ChemGeomMater {
+    new_bond_cylinder(context, coord1, coord2, 1.2)
+}
+// 2f286ebd ends here
 
 // [[file:../ui.note::e47921f2][e47921f2]]
 pub fn main() {
@@ -76,24 +110,23 @@ pub fn main() {
         1000.0,
     );
     let mut control = OrbitControl::new(*camera.target(), 1.0, 100.0);
-    let mut sphere = new_atom_sphere(&context, [0.0, 1.3, 0.0], 0.5);
-    let mut cylinder = new_bond_cylinder(&context, [1.0, 0.0, 0.0], 0.1);
 
     let axes = Axes::new(&context, 0.08, 20.0);
 
     let light0 = DirectionalLight::new(&context, 1.0, Color::WHITE, &vec3(0.0, -0.5, -0.5));
     let light1 = DirectionalLight::new(&context, 1.0, Color::WHITE, &vec3(0.0, 0.5, 0.5));
 
-    let atoms = draw_atoms(&context);
+    let mol = Molecule::from_file("tests/files/CH4.gjf").unwrap();
+    let bonds = draw_bonds(&context, &mol);
+    let atoms = draw_atoms(&context, &mol);
     window.render_loop(move |mut frame_input| {
         camera.set_viewport(frame_input.viewport);
         control.handle_events(&mut camera, &mut frame_input.events);
 
-        let cylinder = new_bond_cylinder(&context, [0.2; 3], 2.0);
         let objects = axes
             .into_iter()
             .chain(atoms.iter().map(|x| x as &dyn Object))
-            .chain(&cylinder);
+            .chain(bonds.iter().map(|x| x as &dyn Object));
 
         // let objects = sphere
         //     .into_iter() //
