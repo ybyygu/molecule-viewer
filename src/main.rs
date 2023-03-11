@@ -10,13 +10,13 @@ type ChemGeomMater = Gm<Mesh, PhysicalMaterial>;
 // base:1 ends here
 
 // [[file:../ui.note::373fa44e][373fa44e]]
-fn new_atom_sphere(context: &Context, coord: [f32; 3], size: f32) -> ChemGeomMater {
+fn new_atom_sphere(context: &Context, coord: [f32; 3], size: f32, color: Color) -> ChemGeomMater {
     let mut sphere = Gm::new(
         Mesh::new(&context, &CpuMesh::sphere(16)),
         PhysicalMaterial::new_opaque(
             &context,
             &CpuMaterial {
-                albedo: Color::new_opaque(255, 0, 0),
+                albedo: color,
                 ..Default::default()
             },
         ),
@@ -66,7 +66,8 @@ fn draw_atoms(context: &Context, mol: &Molecule) -> Vec<ChemGeomMater> {
 fn draw_atom(context: &Context, atom: &Atom) -> ChemGeomMater {
     let coord = atom.position().map(|x| x as f32);
     let size = (atom.get_cov_radius().unwrap_or(0.5) + 0.5) / 3.0;
-    new_atom_sphere(context, coord, size as f32)
+    let color = atom_color(atom);
+    new_atom_sphere(context, coord, size as f32, color)
 }
 // 7c7026e3 ends here
 
@@ -90,10 +91,23 @@ fn draw_bond(context: &Context, coord1: Vec3, coord2: Vec3) -> ChemGeomMater {
 }
 // 2f286ebd ends here
 
-// [[file:../ui.note::e47921f2][e47921f2]]
-pub fn main() {
+// [[file:../ui.note::b1456f78][b1456f78]]
+fn atom_color(atom: &Atom) -> Color {
+    match atom.symbol() {
+        "C" => Color::new_opaque(144, 144, 144),
+        "Si" => Color::new_opaque(94, 94, 94),
+        "O" => Color::new_opaque(0, 255, 0),
+        "O" => Color::new_opaque(48, 80, 248),
+        "H" => Color::new_opaque(255, 255, 255),
+        _ => unimplemented!(),
+    }
+}
+// b1456f78 ends here
+
+// [[file:../ui.note::34893a09][34893a09]]
+fn draw_molecule(mol: &Molecule) {
     let window = Window::new(WindowSettings {
-        title: "Shapes!".to_string(),
+        title: "GCHEMOL molecule Viewer".to_string(),
         max_size: Some((1280, 720)),
         ..Default::default()
     })
@@ -116,7 +130,6 @@ pub fn main() {
     let light0 = DirectionalLight::new(&context, 1.0, Color::WHITE, &vec3(0.0, -0.5, -0.5));
     let light1 = DirectionalLight::new(&context, 1.0, Color::WHITE, &vec3(0.0, 0.5, 0.5));
 
-    let mol = Molecule::from_file("tests/files/CH4.gjf").unwrap();
     let bonds = draw_bonds(&context, &mol);
     let atoms = draw_atoms(&context, &mol);
     window.render_loop(move |mut frame_input| {
@@ -128,11 +141,6 @@ pub fn main() {
             .chain(atoms.iter().map(|x| x as &dyn Object))
             .chain(bonds.iter().map(|x| x as &dyn Object));
 
-        // let objects = sphere
-        //     .into_iter() //
-        //     // .chain(&cylinder)
-        //     .chain(&axes);
-
         frame_input
             .screen()
             .clear(ClearState::color_and_depth(0.8, 0.8, 0.8, 1.0, 1.0))
@@ -140,5 +148,15 @@ pub fn main() {
 
         FrameOutput::default()
     });
+}
+// 34893a09 ends here
+
+// [[file:../ui.note::e47921f2][e47921f2]]
+pub fn main() {
+    // let mut mol = Molecule::from_file("tests/files/MFI.gjf").unwrap();
+    let mut mol = Molecule::from_file("tests/files/CH4.gjf").unwrap();
+    mol.unbuild_crystal();
+    mol.rebond();
+    draw_molecule(&mol);
 }
 // e47921f2 ends here
