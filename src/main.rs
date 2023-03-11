@@ -127,8 +127,10 @@ fn draw_molecule(mol: &Molecule) {
 
     let axes = Axes::new(&context, 0.08, 20.0);
 
-    let light0 = DirectionalLight::new(&context, 1.0, Color::WHITE, &vec3(0.0, -0.5, -0.5));
-    let light1 = DirectionalLight::new(&context, 1.0, Color::WHITE, &vec3(0.0, 0.5, 0.5));
+    let ambient = AmbientLight::new(&context, 0.4, Color::WHITE);
+    let light0 = DirectionalLight::new(&context, 3.0, Color::WHITE, &vec3(0.0, -0.5, -0.5));
+    let light1 = DirectionalLight::new(&context, 3.0, Color::WHITE, &vec3(0.0, 0.5, 0.5));
+    // let directional = DirectionalLight::new(&context, 5.0, Color::WHITE, &vec3(-1.0, -1.0, -1.0));
 
     let bonds = draw_bonds(&context, &mol);
     let atoms = draw_atoms(&context, &mol);
@@ -144,7 +146,7 @@ fn draw_molecule(mol: &Molecule) {
         frame_input
             .screen()
             .clear(ClearState::color_and_depth(0.8, 0.8, 0.8, 1.0, 1.0))
-            .render(&camera, objects, &[&light0, &light1]);
+            .render(&camera, objects, &[&ambient, &light0, &light1]);
 
         FrameOutput::default()
     });
