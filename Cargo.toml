@@ -10,6 +10,7 @@ clap = {version="4", features = ["derive"]}
 eframe = "0.21.3" # Gives us egui, epi and web+native backends
 three-d = "0.14.1"
 gchemol = { version = "0.1.3", features=["adhoc"] }
+vecfx = {version="0.1", features=["nalgebra"]}
 
 [dev-dependencies]
 

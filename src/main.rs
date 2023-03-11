@@ -105,6 +105,8 @@ fn atom_color(atom: &Atom) -> Color {
 // b1456f78 ends here
 
 // [[file:../ui.note::34893a09][34893a09]]
+use vecfx::*;
+
 fn draw_molecule(mol: &Molecule) {
     let window = Window::new(WindowSettings {
         title: "GCHEMOL molecule Viewer".to_string(),
@@ -114,12 +116,12 @@ fn draw_molecule(mol: &Molecule) {
     .unwrap();
     let context = window.gl();
 
-    let mut camera = Camera::new_orthographic(
+    let mut camera = Camera::new_perspective(
         window.viewport(),
-        vec3(5.0, 2.0, 2.5),
-        vec3(0.0, 0.0, -0.5),
+        vec3(4.0, 4.0, 5.0),
+        vec3(0.0, 0.0, 0.0),
         vec3(0.0, 1.0, 0.0),
-        2.5,
+        degrees(45.0),
         0.1,
         1000.0,
     );
@@ -127,28 +129,80 @@ fn draw_molecule(mol: &Molecule) {
 
     let axes = Axes::new(&context, 0.08, 20.0);
 
+    let mut sphere = CpuMesh::sphere(8);
+    sphere.transform(&Mat4::from_scale(0.4)).unwrap();
+
+    let mut pick_mesh = Gm::new(
+        Mesh::new(&context, &sphere),
+        PhysicalMaterial::new(
+            &context,
+            &CpuMaterial {
+                albedo: Color::new(0, 255, 0, 100),
+                ..Default::default()
+            },
+        ),
+    );
+
     let ambient = AmbientLight::new(&context, 0.4, Color::WHITE);
     let light0 = DirectionalLight::new(&context, 3.0, Color::WHITE, &vec3(0.0, -0.5, -0.5));
     let light1 = DirectionalLight::new(&context, 3.0, Color::WHITE, &vec3(0.0, 0.5, 0.5));
-    // let directional = DirectionalLight::new(&context, 5.0, Color::WHITE, &vec3(-1.0, -1.0, -1.0));
 
     let bonds = draw_bonds(&context, &mol);
     let atoms = draw_atoms(&context, &mol);
+    let centers: Vec<_> = atoms.iter().map(|s| s.aabb().center()).enumerate().collect();
     window.render_loop(move |mut frame_input| {
-        camera.set_viewport(frame_input.viewport);
-        control.handle_events(&mut camera, &mut frame_input.events);
+        let mut change = frame_input.first_frame;
+        change |= camera.set_viewport(frame_input.viewport);
 
         let objects = axes
             .into_iter()
             .chain(atoms.iter().map(|x| x as &dyn Object))
             .chain(bonds.iter().map(|x| x as &dyn Object));
 
-        frame_input
-            .screen()
-            .clear(ClearState::color_and_depth(0.8, 0.8, 0.8, 1.0, 1.0))
-            .render(&camera, objects, &[&ambient, &light0, &light1]);
+        for event in frame_input.events.iter() {
+            match event {
+                Event::MousePress { button, position, .. } => {
+                    if *button == MouseButton::Left {
+                        let pixel = (
+                            (frame_input.device_pixel_ratio * position.0) as f32,
+                            (frame_input.viewport.height as f64 - frame_input.device_pixel_ratio * position.1) as f32,
+                        );
 
-        FrameOutput::default()
+                        if let Some(pick) = pick(&context, &camera, pixel, &atoms) {
+                            dbg!();
+                            // find picked atom center
+                            let mut distances: Vec<_> =
+                                centers.iter().map(|(i, center)| ((pick - center).magnitude(), i)).collect();
+                            distances.sort_by_key(|&(d, i)| (d as f64).as_ordered_float());
+                            let (_, i) = distances[0];
+                            let (_, picked) = centers[*i];
+                            pick_mesh.set_transformation(Mat4::from_translation(picked));
+                            change = true;
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        change |= control.handle_events(&mut camera, &mut frame_input.events);
+        // draw
+        if change {
+            frame_input
+                .screen()
+                .clear(ClearState::color_and_depth(1.0, 1.0, 1.0, 1.0, 1.0))
+                .render(&camera, objects.chain(&pick_mesh), &[&ambient, &light0, &light1]);
+        } else {
+            frame_input
+                .screen()
+                .clear(ClearState::color_and_depth(1.0, 1.0, 1.0, 1.0, 1.0))
+                .render(&camera, objects, &[&ambient, &light0, &light1]);
+        }
+
+        FrameOutput {
+            swap_buffers: change,
+            ..Default::default()
+        }
     });
 }
 // 34893a09 ends here
@@ -157,6 +211,7 @@ fn draw_molecule(mol: &Molecule) {
 pub fn main() {
     // let mut mol = Molecule::from_file("tests/files/MFI.gjf").unwrap();
     let mut mol = Molecule::from_file("tests/files/CH4.gjf").unwrap();
+    mol.recenter();
     mol.unbuild_crystal();
     mol.rebond();
     draw_molecule(&mol);
