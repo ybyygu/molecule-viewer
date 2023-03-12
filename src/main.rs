@@ -104,6 +104,23 @@ fn atom_color(atom: &Atom) -> Color {
 }
 // b1456f78 ends here
 
+// [[file:../ui.note::30bab14c][30bab14c]]
+/// Calculate translation and scale transformations for picked atom
+fn transformation_for_picked_atom(atoms_aabb: &[AxisAlignedBoundingBox], pick: Vec3) -> Mat4 {
+    // find picked atom center
+    let mut distances: Vec<_> = atoms_aabb
+        .iter()
+        .enumerate()
+        .map(|(i, aabb)| ((pick - aabb.center()).magnitude(), i))
+        .collect();
+    distances.sort_by_key(|&(d, i)| (d as f64).as_ordered_float());
+    let (_, i) = distances[0];
+    let picked = atoms_aabb[i];
+    // ideal radius = size / 2 / sqrt(3)
+    Mat4::from_translation(picked.center()) * Mat4::from_scale(picked.size().magnitude() / 2.0 / 1.5)
+}
+// 30bab14c ends here
+
 // [[file:../ui.note::34893a09][34893a09]]
 use vecfx::*;
 
@@ -130,7 +147,7 @@ fn draw_molecule(mol: &Molecule) {
     let axes = Axes::new(&context, 0.08, 20.0);
 
     let mut sphere = CpuMesh::sphere(8);
-    sphere.transform(&Mat4::from_scale(0.4)).unwrap();
+    // sphere.transform(&Mat4::from_scale(0.4)).unwrap();
 
     let mut pick_mesh = Gm::new(
         Mesh::new(&context, &sphere),
@@ -149,7 +166,7 @@ fn draw_molecule(mol: &Molecule) {
 
     let bonds = draw_bonds(&context, &mol);
     let atoms = draw_atoms(&context, &mol);
-    let centers: Vec<_> = atoms.iter().map(|s| s.aabb().center()).enumerate().collect();
+    let centers: Vec<_> = atoms.iter().map(|s| s.aabb()).collect();
     window.render_loop(move |mut frame_input| {
         let mut change = frame_input.first_frame;
         change |= camera.set_viewport(frame_input.viewport);
@@ -169,14 +186,9 @@ fn draw_molecule(mol: &Molecule) {
                         );
 
                         if let Some(pick) = pick(&context, &camera, pixel, &atoms) {
-                            dbg!();
-                            // find picked atom center
-                            let mut distances: Vec<_> =
-                                centers.iter().map(|(i, center)| ((pick - center).magnitude(), i)).collect();
-                            distances.sort_by_key(|&(d, i)| (d as f64).as_ordered_float());
-                            let (_, i) = distances[0];
-                            let (_, picked) = centers[*i];
-                            pick_mesh.set_transformation(Mat4::from_translation(picked));
+                            // set effect for picked atom
+                            let trans = transformation_for_picked_atom(&centers, pick);
+                            pick_mesh.set_transformation(trans);
                             change = true;
                         }
                     }
